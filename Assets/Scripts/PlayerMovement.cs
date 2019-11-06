@@ -25,13 +25,17 @@ public class PlayerMovement : MonoBehaviour
         playerRigidbody = GetComponent<Rigidbody>();
     }
 
+    private void Update()
+    {
+        CameraTargetPosition.Value = playerRigidbody.position;
+    }
+
     public void Move()
     {
         if (!isGrounded)
             return;
         Vector3 targetPosition = playerRigidbody.position + new Vector3(HorizontalAxis.Value, 0, VerticalAxis.Value) * Time.deltaTime;
         playerRigidbody.MovePosition(targetPosition);
-        CameraTargetPosition.Value = playerRigidbody.position;
     }
 
     public void Rotate()
@@ -41,6 +45,29 @@ public class PlayerMovement : MonoBehaviour
         playerRigidbody.MoveRotation(playerRigidbody.rotation * Quaternion.Euler(playerRotation));
     }
 
+    public void Shoot()
+    {
+        if (AimNewLocation())
+        {
+            playerRigidbody.position = targetLocation;
+            CameraTargetPosition.Value = playerRigidbody.position;
+        }
+    }
+
+    private bool AimNewLocation()
+    {
+        Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
+        RaycastHit hit;
+
+        if (Physics.Raycast(ray, out hit))
+        {
+            targetLocation = hit.point;
+            Debug.DrawRay(ray.origin, ray.direction,Color.red,2f);
+            Debug.Log("Did Hit " + hit.transform.name +  " " + Vector3.Distance(transform.position, targetLocation));
+            return true;
+        }
+        return false;
+    }
 
     private void OnCollisionEnter(Collision collision)
     {

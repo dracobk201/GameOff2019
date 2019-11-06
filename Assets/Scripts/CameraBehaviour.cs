@@ -7,8 +7,6 @@ public class CameraBehaviour : MonoBehaviour
     [SerializeField]
     private FloatReference RotationSpeed;
     [SerializeField]
-    private FloatReference BoundVerticalRotation;
-    [SerializeField]
     private FloatReference MouseHorizontalAxis;
     [SerializeField]
     private FloatReference MouseVerticalAxis;
@@ -25,7 +23,6 @@ public class CameraBehaviour : MonoBehaviour
     [SerializeField]
     private FloatReference ShakeMagnitude;
 
-    private Vector3 lastTargetPosition;
     private bool isShaking;
 
     private void LateUpdate()
@@ -40,13 +37,10 @@ public class CameraBehaviour : MonoBehaviour
     public void RotateView()
     {
         Vector3 cameraRotation = Vector3.zero;
-        cameraRotation.x = RotationSpeed.Value * MouseVerticalAxis.Value * Time.deltaTime;
-        cameraRotation.y = RotationSpeed.Value * MouseHorizontalAxis.Value * Time.deltaTime;
-        transform.localEulerAngles += cameraRotation;
-
-        //Vector3 tmpRotationValidator = transform.localEulerAngles;
-        //tmpRotationValidator.y = Mathf.Clamp(tmpRotationValidator.x, -BoundVerticalRotation.Value, BoundVerticalRotation.Value);
-        //transform.localEulerAngles = tmpRotationValidator;
+        Vector3 oldCameraRotation = transform.localEulerAngles;
+        cameraRotation.x = oldCameraRotation.x - RotationSpeed.Value * MouseVerticalAxis.Value * Time.deltaTime;
+        cameraRotation.y = oldCameraRotation.y + RotationSpeed.Value * MouseHorizontalAxis.Value * Time.deltaTime;
+        transform.localEulerAngles = cameraRotation;
     }
 
     public void InitShake()
