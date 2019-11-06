@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.SceneManagement;
 
 public class ControllerHandler : MonoBehaviour
 {
@@ -32,6 +31,33 @@ public class ControllerHandler : MonoBehaviour
     [SerializeField]
     private GameEvent NonVerticalAxisEvent;
     private bool isVerticalAxisInUse = false;
+
+    [SerializeField]
+    private GameEvent DireccionalMovement;
+
+    [Header("Mouse Variables")]
+    [SerializeField]
+    private FloatReference HorizontalMouseAxis;
+    [SerializeField]
+    private GameEvent NonHorizontalMouseAxisEvent;
+    [SerializeField]
+    private GameEvent MouseToLeftEvent;
+    [SerializeField]
+    private GameEvent MouseToRightEvent;
+    private bool isHorizontalMouseAxisInUse = false;
+
+    [SerializeField]
+    private FloatReference VerticalMouseAxis;
+    [SerializeField]
+    private GameEvent MouseToUpEvent;
+    [SerializeField]
+    private GameEvent MouseToDownEvent;
+    [SerializeField]
+    private GameEvent NonVerticalMouseAxisEvent;
+    private bool isVerticalMouseAxisInUse = false;
+
+    [SerializeField]
+    private GameEvent MouseMovement;
 
     [Header("Touch Variables")]
     [SerializeField]
@@ -75,6 +101,8 @@ public class ControllerHandler : MonoBehaviour
     {
         CheckingVerticalAxis();
         CheckingHorizontalAxis();
+        CheckingVerticalMouseAxis();
+        CheckingHorizontalMouseAxis();
         CheckingStartButton();
         CheckingSquareButton();
         CheckingXButton();
@@ -213,6 +241,8 @@ public class ControllerHandler : MonoBehaviour
         if (HorizontalSinglePress.Value)
             isHorizontalAxisInUse = true;
         RightButtonEvent.Raise();
+        DireccionalMovement.Raise();
+
     }
 
     private void LeftDirectionActions()
@@ -221,6 +251,7 @@ public class ControllerHandler : MonoBehaviour
         if (HorizontalSinglePress.Value)
             isHorizontalAxisInUse = true;
         LeftButtonEvent.Raise();
+        DireccionalMovement.Raise();
     }
 
     #endregion
@@ -256,6 +287,8 @@ public class ControllerHandler : MonoBehaviour
         if (VerticalSinglePress.Value)
             isVerticalAxisInUse = true;
         UpButtonEvent.Raise();
+        DireccionalMovement.Raise();
+
     }
 
     private void DownDirectionActions()
@@ -264,9 +297,96 @@ public class ControllerHandler : MonoBehaviour
         if (VerticalSinglePress.Value)
             isVerticalAxisInUse = true;
         DownButtonEvent.Raise();
+        DireccionalMovement.Raise();
+
     }
 
     #endregion
+
+    #region Horizontal Mouse Functions
+
+    private void CheckingHorizontalMouseAxis()
+    {
+        float axisValue = Input.GetAxis(Global.HORIZONTALMOUSEAXIS);
+        if (axisValue < 0 && !isHorizontalMouseAxisInUse)
+        {
+            LeftMouseDirectionActions(axisValue);
+        }
+        else if (axisValue > 0 && !isHorizontalMouseAxisInUse)
+        {
+            RightMouseDirectionActions(axisValue);
+        }
+        else if (axisValue == 0)
+        {
+            NoMouseHorizontalActions();
+        }
+    }
+
+    private void NoMouseHorizontalActions()
+    {
+        HorizontalMouseAxis.Value = 0;
+        NonHorizontalMouseAxisEvent.Raise();
+    }
+
+    private void RightMouseDirectionActions(float axisValue)
+    {
+        HorizontalMouseAxis.Value = axisValue;
+        MouseToRightEvent.Raise();
+        MouseMovement.Raise();
+    }
+
+    private void LeftMouseDirectionActions(float axisValue)
+    {
+        HorizontalMouseAxis.Value = axisValue;
+        MouseToLeftEvent.Raise();
+        MouseMovement.Raise();
+    }
+
+    #endregion
+
+    #region Vertical Mouse Functions
+    private void CheckingVerticalMouseAxis()
+    {
+        float axisValue = Input.GetAxis(Global.VERTICALMOUSEAXIS);
+        if (axisValue < 0 && !isVerticalMouseAxisInUse)
+        {
+            DownMouseDirectionActions(axisValue);
+        }
+        else if (axisValue > 0 && !isVerticalMouseAxisInUse)
+        {
+            UpMouseDirectionActions(axisValue);
+        }
+        else if (axisValue == 0)
+        {
+            NoMouseVerticalActions();
+        }
+    }
+
+    private void NoMouseVerticalActions()
+    {
+        VerticalAxis.Value = 0;
+        NonVerticalMouseAxisEvent.Raise();
+    }
+
+    private void UpMouseDirectionActions(float axisValue)
+    {
+        VerticalMouseAxis.Value = axisValue;
+        MouseToUpEvent.Raise();
+        MouseMovement.Raise();
+
+    }
+
+    private void DownMouseDirectionActions(float axisValue)
+    {
+        VerticalMouseAxis.Value = axisValue;
+        MouseToDownEvent.Raise();
+        MouseMovement.Raise();
+
+    }
+
+    #endregion
+
+    #region Button Functions
 
     private void CheckingStartButton()
     {
@@ -306,6 +426,8 @@ public class ControllerHandler : MonoBehaviour
             isXAxisInUse = false;
         }
     }
+
+    #endregion
 
     private void CheckChangeButtonUI()
     {

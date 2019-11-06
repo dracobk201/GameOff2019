@@ -76,8 +76,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
 --- !u!1 &3981476124672406823
 GameObject:
   m_ObjectHideFlags: 0
@@ -145,6 +143,25 @@ MonoBehaviour:
   DownButtonEvent: {fileID: 11400000, guid: 3d7be2a9898f0fb4c8dbf85ec2459867, type: 2}
   NonVerticalAxisEvent: {fileID: 11400000, guid: 5f9cf441191c92c44a5b5fdfb1ee67f3,
     type: 2}
+  DireccionalMovement: {fileID: 11400000, guid: ed719b9819b158743b406157900acc56,
+    type: 2}
+  HorizontalMouseAxis:
+    UseVariable: 1
+    ConstantValue: 0
+    Variable: {fileID: 11400000, guid: e814e84f167fd994bbdbb417049c3bff, type: 2}
+  NonHorizontalMouseAxisEvent: {fileID: 11400000, guid: b3088e77e6111fd4ea3be337e51068ea,
+    type: 2}
+  MouseToLeftEvent: {fileID: 11400000, guid: fcef9d29dd5179a4baac2026bf425a4f, type: 2}
+  MouseToRightEvent: {fileID: 11400000, guid: 31f063c97ff207649acad7ad9067cd9f, type: 2}
+  VerticalMouseAxis:
+    UseVariable: 1
+    ConstantValue: 0
+    Variable: {fileID: 11400000, guid: 5f00b07ae1d6cdc49b2c493dc54b8560, type: 2}
+  MouseToUpEvent: {fileID: 11400000, guid: a9fa4e00ad36d474b8ac32110bd8af97, type: 2}
+  MouseToDownEvent: {fileID: 11400000, guid: 283177d8582113f41baac92531eff0e1, type: 2}
+  NonVerticalMouseAxisEvent: {fileID: 11400000, guid: 1cc0df17c9ddb72469a4755f61fc3320,
+    type: 2}
+  MouseMovement: {fileID: 11400000, guid: 658dd91b671d0cf40b7e9554e7d5912d, type: 2}
   MaxSwipeTime:
     UseVariable: 1
     ConstantValue: 0
@@ -532,8 +549,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
 --- !u!114 &8129048215599985842
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -561,5 +576,3 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
