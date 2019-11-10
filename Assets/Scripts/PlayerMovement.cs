@@ -47,10 +47,10 @@ public class PlayerMovement : MonoBehaviour
 
     public void Shoot()
     {
+        StopAllCoroutines();
         if (AimNewLocation())
         {
-            playerRigidbody.position = targetLocation;
-            CameraTargetPosition.Value = playerRigidbody.position;
+            StartCoroutine(TranslatePlayer(targetLocation));
         }
     }
 
@@ -62,11 +62,27 @@ public class PlayerMovement : MonoBehaviour
         if (Physics.Raycast(ray, out hit))
         {
             targetLocation = hit.point;
-            Debug.DrawRay(ray.origin, ray.direction,Color.red,2f);
-            Debug.Log("Did Hit " + hit.transform.name +  " " + Vector3.Distance(transform.position, targetLocation));
             return true;
         }
         return false;
+    }
+
+    private IEnumerator TranslatePlayer (Vector3 position)
+    {
+        Vector3 heading = position - playerRigidbody.position;
+        float distance = heading.magnitude;
+        float originalDistance = distance;
+        Vector3 direction = heading / distance;
+        while (distance > originalDistance * 0.05f)
+        {
+            Debug.Log(distance);
+            playerRigidbody.position += direction;
+            CameraTargetPosition.Value = playerRigidbody.position;
+            yield return null;
+            heading = position - playerRigidbody.position;
+            distance = heading.magnitude;
+            direction = heading / distance;
+        }
     }
 
     private void OnCollisionEnter(Collision collision)
