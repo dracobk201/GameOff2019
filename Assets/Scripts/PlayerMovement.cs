@@ -75,7 +75,7 @@ public class PlayerMovement : MonoBehaviour
         Vector3 direction = heading / distance;
         while (distance > originalDistance * 0.05f)
         {
-            Debug.Log(distance);
+            //Debug.Log(distance);
             playerRigidbody.position += direction;
             CameraTargetPosition.Value = playerRigidbody.position;
             yield return null;
