@@ -11,6 +11,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField]
     private FloatReference RotationSpeed;
     [SerializeField]
+    private FloatReference ReachDistance;
+    [SerializeField]
     private FloatReference HorizontalAxis;
     [SerializeField]
     private FloatReference VerticalAxis;
@@ -61,7 +63,7 @@ public class PlayerMovement : MonoBehaviour
         Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
         RaycastHit hit;
 
-        if (Physics.Raycast(ray, out hit))
+        if (Physics.Raycast(ray, out hit, ReachDistance.Value))
         {
             targetLocation = hit.point;
             return true;
