@@ -23,6 +23,7 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody playerRigidbody;
     private bool isGrounded;
     private Vector3 targetLocation;
+    private Vector3 targetNormal;
 
     private void Start()
     {
@@ -66,6 +67,7 @@ public class PlayerMovement : MonoBehaviour
         if (Physics.Raycast(ray, out hit, ReachDistance.Value))
         {
             targetLocation = hit.point;
+            targetNormal = hit.normal;
             return true;
         }
         return false;
@@ -81,6 +83,7 @@ public class PlayerMovement : MonoBehaviour
         {
             Debug.Log(distance);
             playerRigidbody.position += direction * TraslationSpeed.Value * Time.deltaTime;
+            playerRigidbody.rotation = Quaternion.FromToRotation(Vector3.forward, targetNormal);
             CameraTargetPosition.Value = playerRigidbody.position;
             yield return null;
             heading = position - playerRigidbody.position;
