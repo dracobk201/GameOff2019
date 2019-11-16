@@ -7,6 +7,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField]
     private FloatReference MoveSpeed;
     [SerializeField]
+    private FloatReference TraslationSpeed;
+    [SerializeField]
     private FloatReference RotationSpeed;
     [SerializeField]
     private FloatReference HorizontalAxis;
@@ -76,7 +78,7 @@ public class PlayerMovement : MonoBehaviour
         while (distance > originalDistance * 0.05f)
         {
             Debug.Log(distance);
-            playerRigidbody.position += direction;
+            playerRigidbody.position += direction * TraslationSpeed.Value * Time.deltaTime;
             CameraTargetPosition.Value = playerRigidbody.position;
             yield return null;
             heading = position - playerRigidbody.position;
