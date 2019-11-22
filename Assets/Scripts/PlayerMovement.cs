@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -82,21 +81,33 @@ public class PlayerMovement : MonoBehaviour
 
     private IEnumerator TranslatePlayer (Vector3 position)
     {
-        
+        Vector3 originalPosition = playerRigidbody.position;
+        Vector3 originalRotation = playerRigidbody.rotation.eulerAngles;
+
         Vector3 heading = position - playerRigidbody.position;
         float distance = heading.magnitude;
         float originalDistance = distance;
-        Vector3 direction = heading / distance;
+
+        Vector3 headingRotation = targetNormal - playerRigidbody.rotation.eulerAngles;
+        float distanceRotation = headingRotation.magnitude;
+        float originalDistanceRotation = distanceRotation;
+
         while (distance > originalDistance * 0.05f)
         {
-            Debug.Log(distance);
-            playerRigidbody.position += direction * TraslationSpeed.Value * Time.deltaTime;
-            playerRigidbody.rotation = Quaternion.FromToRotation(Vector3.forward, targetNormal);
+            float newX = EasingFunction.Linear(originalPosition.x, position.x, distance / originalDistance);
+            float newY = EasingFunction.Linear(originalPosition.y, position.y, distance / originalDistance);
+            float newZ = EasingFunction.Linear(originalPosition.z, position.z, distance / originalDistance);
+            playerRigidbody.position = new Vector3(newX, newY, newZ);
+            newX = EasingFunction.Linear(originalRotation.x, targetNormal.x, distanceRotation / originalDistanceRotation);
+            newY = EasingFunction.Linear(originalRotation.y, targetNormal.y, distanceRotation / originalDistanceRotation);
+            newZ = EasingFunction.Linear(originalRotation.z, targetNormal.z, distanceRotation / originalDistanceRotation);
+            playerRigidbody.rotation = Quaternion.FromToRotation(Vector3.forward, new Vector3(newX, newY, newZ));
             CameraTargetPosition.Value = playerRigidbody.position;
             yield return null;
             heading = position - playerRigidbody.position;
             distance = heading.magnitude;
-            direction = heading / distance;
+            headingRotation = targetNormal - playerRigidbody.rotation.eulerAngles;
+            distanceRotation = headingRotation.magnitude;
         }
     }
 
