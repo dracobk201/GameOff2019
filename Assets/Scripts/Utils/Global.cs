@@ -4,6 +4,7 @@
     public const string PLAYERTAG = "Player";
     public const string ENEMYTAG = "Enemy";
     public const string GROUNDTAG = "Ground";
+    public const string GOALTAG = "Finish";
     #endregion
 
     #region Axis

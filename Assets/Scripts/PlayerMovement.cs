@@ -20,8 +20,11 @@ public class PlayerMovement : MonoBehaviour
     private FloatReference MouseHorizontalAxis;
     [SerializeField]
     private Vector3Reference CameraTargetPosition;
+    [SerializeField]
+    private GameEvent PlayerReachGoal;
     private Rigidbody playerRigidbody;
     private bool isGrounded;
+    private bool isGameOver;
     private Vector3 targetLocation;
     private Vector3 targetNormal;
 
@@ -37,7 +40,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void Move()
     {
-        if (!isGrounded)
+        if (!isGrounded || isGameOver)
             return;
         Vector3 targetPosition = playerRigidbody.position + new Vector3(HorizontalAxis.Value, 0, VerticalAxis.Value) * Time.deltaTime;
         playerRigidbody.MovePosition(targetPosition);
@@ -45,6 +48,8 @@ public class PlayerMovement : MonoBehaviour
 
     public void Rotate()
     {
+        if (isGameOver)
+            return;
         Vector3 playerRotation = Vector3.zero;
         playerRotation.y = RotationSpeed.Value * MouseHorizontalAxis.Value * Time.deltaTime;
         playerRigidbody.MoveRotation(playerRigidbody.rotation * Quaternion.Euler(playerRotation));
@@ -52,6 +57,8 @@ public class PlayerMovement : MonoBehaviour
 
     public void Shoot()
     {
+        if (isGameOver)
+            return;
         StopAllCoroutines();
         if (AimNewLocation())
         {
@@ -75,6 +82,7 @@ public class PlayerMovement : MonoBehaviour
 
     private IEnumerator TranslatePlayer (Vector3 position)
     {
+        
         Vector3 heading = position - playerRigidbody.position;
         float distance = heading.magnitude;
         float originalDistance = distance;
@@ -98,6 +106,11 @@ public class PlayerMovement : MonoBehaviour
         {
             if (item.otherCollider.CompareTag(Global.GROUNDTAG))
                 isGrounded = true;
+            else if (item.otherCollider.CompareTag(Global.GOALTAG))
+            {
+                PlayerReachGoal.Raise();
+                isGameOver = true;
+            }
         }
     }
 }

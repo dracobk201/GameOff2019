@@ -252,6 +252,7 @@ MonoBehaviour:
     UseVariable: 1
     ConstantValue: {x: 0, y: 0, z: 0}
     Variable: {fileID: 11400000, guid: 6b7d635e0c26ac14eac270605a836970, type: 2}
+  PlayerReachGoal: {fileID: 11400000, guid: e1769fadb08597143969cfd2c2bb61d6, type: 2}
 --- !u!114 &518532977829083293
 MonoBehaviour:
   m_ObjectHideFlags: 0
