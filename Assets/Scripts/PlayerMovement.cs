@@ -103,7 +103,7 @@ public class PlayerMovement : MonoBehaviour
             newZ = EasingFunction.Linear(originalRotation.z, targetNormal.z, distanceRotation / originalDistanceRotation);
             playerRigidbody.rotation = Quaternion.FromToRotation(Vector3.forward, new Vector3(newX, newY, newZ));
             CameraTargetPosition.Value = playerRigidbody.position;
-            yield return null;
+            yield return new WaitForSeconds(0.1f);
             heading = position - playerRigidbody.position;
             distance = heading.magnitude;
             headingRotation = targetNormal - playerRigidbody.rotation.eulerAngles;
